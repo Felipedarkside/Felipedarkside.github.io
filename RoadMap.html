@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roadmap</title>
+    <style>
+        @font-face {
+            font-family: 'Pixel';
+            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        }
+        body {
+            font-family: 'Pixel', sans-serif;
+            background: linear-gradient(to right, purple, black);
+        }
+        .area {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Roadmap</h1>
+    <div id="area1" class="area">
+        <h2>Área 1</h2>
+        <ul>
+            <li>Npcs inteligentes usando a tecnologia GSAI (sem data)</li>
+            <li>The complex com mais de 100 níveis (final de 2024)</li>
+        </ul>
+    </div>
+    <div id="area2" class="area">
+        <h2>Área 2</h2>
+        <ul>
+            <li>Twinsanity engine: game engine 2D e 3D (2025)</li>
+        </ul>
+    </div>
+
+    <h3>Áreas Abertas:</h3>
+    <ul id="openedAreas"></ul>
+
+    <h3>Próxima Área em:</h3>
+    <p id="countdown"></p>
+
+    <script>
+        let areas = document.querySelectorAll('.area');
+        let areaIndex = 0;
+        let openedAreas = document.querySelector('#openedAreas');
+        let countdown = document.querySelector('#countdown');
+        let interval = setInterval(() => {
+            if (areaIndex < areas.length) {
+                areas[areaIndex].style.display = 'block';
+                let li = document.createElement('li');
+                li.textContent = `Área ${areaIndex + 1}`;
+                openedAreas.appendChild(li);
+                areaIndex++;
+            } else {
+                clearInterval(interval);
+                countdown.textContent = 'Todas as áreas estão abertas!';
+            }
+        }, 7 * 24 * 60 * 60 * 1000);
+
+        let timeLeft = 7 * 24 * 60 * 60 * 1000;
+        setInterval(() => {
+            if (timeLeft > 0) {
+                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                countdown.textContent = `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`;
+                timeLeft -= 1000;
+            } else {
+                timeLeft = 7 * 24 * 60 * 60 * 1000;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
