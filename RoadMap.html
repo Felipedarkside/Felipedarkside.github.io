@@ -43,32 +43,39 @@
         let areaIndex = 0;
         let openedAreas = document.querySelector('#openedAreas');
         let countdown = document.querySelector('#countdown');
-        let interval = setInterval(() => {
-            if (areaIndex < areas.length) {
-                areas[areaIndex].style.display = 'block';
-                let li = document.createElement('li');
-                li.textContent = `Área ${areaIndex + 1}`;
-                openedAreas.appendChild(li);
-                areaIndex++;
-            } else {
-                clearInterval(interval);
-                countdown.textContent = 'Todas as áreas estão abertas!';
-            }
-        }, 7 * 24 * 60 * 60 * 1000);
-
+        let interval;
         let timeLeft = 7 * 24 * 60 * 60 * 1000;
-        setInterval(() => {
-            if (timeLeft > 0) {
-                let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                countdown.textContent = `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`;
-                timeLeft -= 1000;
-            } else {
-                timeLeft = 7 * 24 * 60 * 60 * 1000;
-            }
-        }, 1000);
+
+        fetch('https://api.github.com')
+            .then(response => response.json())
+            .then(data => {
+                let currentTime = new Date(data['current_user_url']).getTime();
+                interval = setInterval(() => {
+                    if (areaIndex < areas.length) {
+                        areas[areaIndex].style.display = 'block';
+                        let li = document.createElement('li');
+                        li.textContent = `Área ${areaIndex + 1}`;
+                        openedAreas.appendChild(li);
+                        areaIndex++;
+                    } else {
+                        clearInterval(interval);
+                        countdown.textContent = 'Todas as áreas estão abertas!';
+                    }
+                }, timeLeft);
+
+                setInterval(() => {
+                    if (timeLeft > 0) {
+                        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                        countdown.textContent = `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`;
+                        timeLeft -= 1000;
+                    } else {
+                        timeLeft = 7 * 24 * 60 * 60 * 1000;
+                    }
+                }, 1000);
+            });
     </script>
 </body>
 </html>
